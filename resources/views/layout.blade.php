@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BHW Inventory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>BHW  RIMS</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body 
@@ -176,7 +178,16 @@
         justify-content: center;
     }
 }
-    </style>
+#searchButton, #refreshButton, #addButton 
+{
+    height: 40px; 
+    line-height: 1.5;
+}
+.refresh-btn 
+{
+    margin-left: 10px; 
+}
+</style>
 </head>
 <body>
     <nav class="navbar">
@@ -185,22 +196,21 @@
             <span>Catherine</span>
             <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg" alt="User Profile">
         </div>
-        
     </nav>
     
     <div class="sidebar" id="sidebar">
         <div class="logo">
             <img src="https://www.glmedicals.com/static/home/img/og/grace-and-lord-medicals-facebook-476-476.png" alt="Logo">
         </div>
-        <a href="{{ route('dashboard') }}">
+        <a href="#">
             <i class="fas fa-home icon"></i>
             <span>Dashboard</span>
         </a>
-        <a href="">
+        <a href="{{route('residents.index')}}">
             <i class="fas fa-users icon"></i>
             <span>Residents</span>
         </a>
-        <a href="">
+        <a href="{{ route('medicines.index') }}">
             <i class="fas fa-pills icon"></i>
             <span>Medicine</span>
         </a>
@@ -220,6 +230,11 @@
         @yield('content')
     </div>
 
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+   
     <script>
         const sidebar = document.getElementById('sidebar');
         
@@ -231,11 +246,47 @@
                 sidebar.classList.remove('compact');
             }
         });
+        // if (window.innerWidth <= 768) {
+        //     sidebar.classList.add('compact');
+        // } else {
+        //     sidebar.classList.remove('compact');
+        // }
+
+        // Initialize on page load
         if (window.innerWidth <= 768) {
             sidebar.classList.add('compact');
         } else {
             sidebar.classList.remove('compact');
         }
+        // medicines deletion
+       // Handle delete button click and set form action dynamically
+$(document).on('click', '.delete-button', function () {
+    const id = $(this).data('id');
+    $('#deleteFormMedicine').attr('action', `/medicines/${id}`);
+});
+
+        // residents deletion
+        $(document).on('click', '.delete-button', function () 
+        {
+            const id = $(this).data('id');
+            $('#deleteForm').attr('action', `/residents/${id}`);
+        });
+        
+        function refreshResidents() {
+        window.location.href = "{{ route('residents.index') }}";
+    }
+
+    function addResident() {
+        window.location.href = "{{ route('residents.create') }}";
+    }
+
+    function addMedicine() {
+        window.location.href = "{{ route('medicines.create') }}";
+    }
+
+    function refreshPage() {
+        window.location.href = "{{ route('medicines.index') }}";
+    }
     </script>
 </body>
 </html>

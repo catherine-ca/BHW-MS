@@ -6,10 +6,34 @@ use Illuminate\Http\Request;
 
 class ResidentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $residents = Resident::all();
-        return view('residents.index', compact('residents'));
+        // $residents = Resident::all();
+        // return view('residents.index', compact('residents'));
+        $query = $request->input('search');
+
+        if ($query) 
+        {
+            // Search residents by name
+            $residents = Resident::where('firstname', 'like', '%' . $query . '%')->get();
+
+            // Check if no residents are found
+            if ($residents->isEmpty()) 
+            {
+                $message = "Name of resident not found.";
+            } else 
+                {
+                    $message = null;
+                }
+        } else 
+            {
+            // Show all medicines when no search query
+            $residents = Resident::all();
+            $message = null;
+        }
+
+        return view('residents.index', compact('residents', 'query', 'message'));
+  
     }
 
     public function create()
@@ -35,7 +59,7 @@ class ResidentController extends Controller
             'sitio' => $request->sitio,
             'phone_number' => $request->phone_number,
         ]);
-        return redirect()->route('residents.index')->with('success', 'Resident added successfully!');
+        return redirect()->route('residents.index');
     }
 
     public function edit($id)
@@ -64,8 +88,18 @@ class ResidentController extends Controller
             'phone_number' => $request->phone_number,
         ]);
         
-        return redirect()->route('residents.index')->with('success', 'Resident updated successfully!');
+        return redirect()->route('residents.index');
     }
+    
+    public function destroy($id)
+    {
+        // Find the resident by ID
+        $resident = Resident::findOrFail($id);
 
+        // Delete the resident
+        $resident->delete();
 
+        // Redirect back with a success message
+        return redirect()->route('residents.index')->with('success', 'Resident deleted successfully!');
+    }
 }
