@@ -17,7 +17,6 @@ class MedicineController extends Controller
             // Search medicines by name
             $medicines = Medicine::where('name', 'like', '%' . $query . '%')->get();
 
-            // Check if no medicines are found
             if ($medicines->isEmpty()) 
             {
                 $message = "Name of medicine not found.";
@@ -27,7 +26,7 @@ class MedicineController extends Controller
                 }
         } else 
             {
-            // Show all medicines when no search query
+
             $medicines = Medicine::all();
             $message = null;
         }
@@ -35,7 +34,7 @@ class MedicineController extends Controller
         return view('medicines.index', compact('medicines', 'query', 'message'));
     }
 
-    // Show the form for creating a new medicine
+ 
     public function create()
     {
         return view('medicines.create');
@@ -58,7 +57,6 @@ class MedicineController extends Controller
     }
     
 
-    // Show the form for editing the quantity of a specific medicine
     public function edit(Medicine $medicine)
     {
         return view('medicines.edit', compact('medicine'));
@@ -67,7 +65,7 @@ class MedicineController extends Controller
     // Update the quantity of a specific medicine
     public function update(Request $request, Medicine $medicine)
     {
-        // Validate the input data
+
     $validated = $request->validate([
         'dosage_form' => 'required|string|max:255',
         'dosage_strength' => 'required|string|max:255',
@@ -75,22 +73,19 @@ class MedicineController extends Controller
         'quantity_in_stock' => 'required|integer|min:0',
     ]);
 
-    // Update the medicine with the validated data
-    $medicine->update($validated);
 
-    // Redirect back to the medicines index with a success message
+    $medicine->update($validated);
     return redirect()->route('medicines.index');
     }
 
-    // Remove a specific medicine from the database
     public function destroy($id)
-{
-    $medicine = Medicine::findOrFail($id);
-    $medicine->delete();
+    {
+        $medicine = Medicine::findOrFail($id);
+        $medicine->delete();
 
-    // Redirect back to the medicines index page with a success message
-    return redirect()->route('medicines.index')->with('success', 'Medicine deleted successfully.');
-}
+
+        return redirect()->route('medicines.index');
+    }
 
 
 

@@ -7,17 +7,15 @@
         <div class="d-flex">
             <form action="{{ route('residents.index') }}" method="GET">
                 <div class="input-group mb-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search medicines..." value="{{ request('search') }}"> <!-- Retains search query -->
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <input type="text" name="search" class="form-control" placeholder="Search resident..." value="{{ request('search') }}"> <!-- Retains search query -->
+                    <button class="btn btn-primary" type="submit">  <i class="fas fa-search"></i></button>
                 </div>
             </form>
             <!-- Refresh Button -->
-            <a href="{{ route('residents.index') }}" class="btn btn-secondary">Refresh</a>
-            <!-- <button class="btn btn-secondary" id="refreshButton" onclick="window.location.href='{{ route('residents.index') }}';">Refresh</button> -->
+            <button class="btn btn-secondary" id="refreshButton" onclick="refreshResidents();">  <i class="fas fa-sync-alt"></i></button>
         </div>
         <div>
              <button class="btn btn-success" id="addButton" onclick="addResident();">Add Resident</button>    
-        <!-- <button class="btn btn-success" id="addButton" onclick="window.location.href='{{ route('residents.create') }}'">Add Resident</button> -->
         </div>
         <!-- Display Success Message -->
         @if(session('success'))
@@ -53,7 +51,6 @@
             @endforeach
         </tbody>
     </table>
-     <!-- Message for No Match Found -->
      @if(isset($message) && $message)
         <div class="alert alert-warning">
             {{ $message }}
@@ -61,7 +58,6 @@
     @endif
 </div>
 
-<!-- Modal for Delete Confirmation -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -88,7 +84,6 @@
 
 @endsection
 
-@push('scripts')
 <script>
     // Reset table to show all rows
     function refreshResidents() 
@@ -101,4 +96,3 @@
         $('#deleteForm').attr('action', `/residents/${id}`);
     });
 </script>
-@endpush

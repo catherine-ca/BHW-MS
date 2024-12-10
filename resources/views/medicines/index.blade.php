@@ -2,24 +2,20 @@
 
 @section('content')
 <div class="container mt-4">
-    <!-- Header Section with Buttons -->
     <div class="d-flex justify-content-between mb-3">
         <div class="d-flex ">
             <form action="{{ route('medicines.index') }}" method="GET">
                 <div class="input-group mb-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search medicines..." value="{{ request('search') }}"> <!-- Retains search query -->
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <input type="text" name="search" class="form-control" placeholder="Search medicine..." value="{{ request('search') }}"> <!-- Retains search query -->
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
             <!-- Refresh Button -->
-            <button class="btn btn-secondary" id="refreshButton" onclick="refreshPage();">Refresh</button>
-            <!-- <button class="btn btn-secondary" id="refreshButton" onclick="window.location.href='{{ route('medicines.index') }}';">Refresh</button> -->
+            <button class="btn btn-secondary" id="refreshButton" onclick="refreshPage();">  <i class="fas fa-sync-alt"></i></button>
         </div>
-
         <!-- Add Medicine Button -->
         <button class="btn btn-success" id="addButton" onclick="addMedicine();">Add Medicine</button>
-        <!-- <button class="btn btn-success" id="addButton" onclick="window.location.href='{{ route('medicines.create')}}';">Add Medicine</button> -->
-        
+
         <!-- Display Success Message -->
         @if(session('success'))
         <div class="alert alert-success">
@@ -28,7 +24,6 @@
         @endif
     </div>
 
-    <!-- Medicines Table -->
     <table class="table table-striped" id="medicinesTable">
         <thead>
             <tr>
@@ -56,8 +51,8 @@
             @endforeach
         </tbody>
     </table>
-        <!-- Message for No Match Found -->
-        @if(isset($message) && $message)
+
+    @if(isset($message) && $message)
         <div class="alert alert-warning">
             {{ $message }}
         </div>
@@ -65,7 +60,7 @@
 
 </div>
 
-<!-- Modal for Delete Confirmation -->
+<!-- Modal -->
 <div class="modal fade" id="deleteModalMedicine" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabelMedicine" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -91,17 +86,15 @@
 </div>
 @endsection
 
-@push('scripts')
 <script>
-   // Reset table to show all rows
-   function refreshMedicines() {
-        // Reload the page without search query
+   function refreshMedicines() 
+   {
         window.location.href = "{{ route('medicines.index') }}";
     }
-    // Handle delete button click and set form action dynamically
-    $(document).on('click', '.delete-button', function () {
+    $(document).on('click', '.delete-button', function () 
+    {
         const id = $(this).data('id');
         $('#deleteFormMedicine').attr('action', `/medicines/${id}`);
     });
 </script>
-@endpush
+

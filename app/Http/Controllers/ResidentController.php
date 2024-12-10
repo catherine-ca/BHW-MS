@@ -8,8 +8,6 @@ class ResidentController extends Controller
 {
     public function index(Request $request)
     {
-        // $residents = Resident::all();
-        // return view('residents.index', compact('residents'));
         $query = $request->input('search');
 
         if ($query) 
@@ -93,13 +91,10 @@ class ResidentController extends Controller
     
     public function destroy($id)
     {
-        // Find the resident by ID
-        $resident = Resident::findOrFail($id);
 
-        // Delete the resident
+        $resident = Resident::findOrFail($id);
         $resident->delete();
 
-        // Redirect back with a success message
-        return redirect()->route('residents.index')->with('success', 'Resident deleted successfully!');
+        return redirect()->route('residents.index');
     }
 }
