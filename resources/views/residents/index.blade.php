@@ -5,13 +5,24 @@
 <h5 class="mt-3">Residents</h5>
     <div class="d-flex justify-content-between mb-3 mt-4">
         <div class="d-flex">
-            <input type="text" id="searchBar" class="form-control me-2" placeholder="Type a name to search...">
-            <button class="btn btn-secondary me-2" id="filterButton" onclick="filterResidents()">Filter</button>
-            <button class="btn btn-primary" id="refreshButton" onclick="window.location.reload()">Refresh</button>
+            <form action="{{ route('residents.index') }}" method="GET">
+                <div class="input-group mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search resident..." value="{{ request('search') }}"> <!-- Retains search query -->
+                    <button class="btn btn-primary" type="submit">  <i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Refresh Button -->
+            <button class="btn btn-secondary" id="refreshButton" onclick="refreshResidents();">  <i class="fas fa-sync-alt"></i></button>
         </div>
         <div>
-            <button class="btn btn-success" id="addButton" onclick="window.location.href='{{ route('residents.create') }}'">Add Resident</button>
+             <button class="btn btn-success" id="addButton" onclick="addResident();">Add Resident</button>    
         </div>
+        <!-- Display Success Message -->
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
     </div>
 
     <!--Table ng residents -->
@@ -34,37 +45,54 @@
                     <td>{{ $resident->phone_number }}</td>
                     <td>
                         <a href="{{ route('residents.edit', $resident->id) }}" class="btn btn-warning btn-sm">Update</a>
-                        <form action="{{ route('residents.destroy', $resident->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this resident?')">Remove</button>
-                        </form>
+                        <button data-toggle="modal" data-target="#deleteModal" data-id="{{ $resident->id }}" class="btn btn-danger btn-sm delete-button">Remove</button>     
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+     @if(isset($message) && $message)
+        <div class="alert alert-warning">
+            {{ $message }}
+        </div>
+    @endif
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this resident?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
-@push('scripts')
-<!-- para mafilter sa search  (di nagana) -->
 <script>
-    function filterResidents() {
-        var input = document.getElementById("searchBar").value.toLowerCase();
-        var table = document.getElementById("residentsTable");
-        var tr = table.getElementsByTagName("tr"); 
-        for (var i = 1; i < tr.length; i++) {
-            var td = tr[i].getElementsByTagName("td")[0];  
-            if (td) {
-                var txtValue = td.textContent || td.innerText;
-                if (txtValue.toLowerCase().includes(input)) {
-                    tr[i].style.display = "";  
-                } else {
-                    tr[i].style.display = "none"; 
-                }
-            }
-        }
+    // Reset table to show all rows
+    function refreshResidents() 
+    {
+        window.location.href = "{{ route('residents.index') }}";
     }
+    //  button click 
+    $(document).on('click', '.delete-button', function () {
+        const id = $(this).data('id');
+        $('#deleteForm').attr('action', `/residents/${id}`);
+    });
 </script>
-@endpush

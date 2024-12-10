@@ -39,7 +39,8 @@
         </div>
 
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-success px-4 py-2" style="background-color: #8B9A46; border: none;">Update Resident</button>
+            <button type="submit" class="btn btn-success px-4 py-2" style="background-color: #8B9A46; border: none;">Update</button>
+            <a href="{{ route('residents.index') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>
