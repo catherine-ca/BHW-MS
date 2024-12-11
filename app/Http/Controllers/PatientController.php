@@ -39,7 +39,7 @@ class PatientController extends Controller
         'status' => 'Ongoing',
     ]);
 
-    return redirect()->route('patients.index');
+    return redirect()->route('patients .index');
 }
 
 private function getAgeCategory($age)
@@ -64,7 +64,7 @@ private function getAgeCategory($age)
 
             // Mark the patient as "Completed"
             $patient->status = 'Completed';
-            $patient->save();
+            $patient->save(); 
 
             // Record the medicine receipt
             Record::create([

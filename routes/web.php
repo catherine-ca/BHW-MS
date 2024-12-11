@@ -37,3 +37,9 @@ Route::put('/{patient}', [PatientController::class, 'update'])->name('patients.u
 Route::resource('patients', PatientController::class);
 Route::patch('/patients/{id}/update-status', [PatientController::class, 'updateStatus'])->name('patients.updateStatus');
 Route::resource('records', RecordController::class);
+
+use App\Http\Controllers\Auth\LoginController;
+
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');

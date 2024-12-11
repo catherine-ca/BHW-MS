@@ -13,8 +13,9 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    
     public function dashboard()
-    {
+    {    
         // Patients Summary
         $todayCount = Patient::whereDate('updated_at', today())->where('status', 'Completed')->count();
             $monthCount = Patient::whereMonth('updated_at', today()->month)->where('status', 'Completed')->count();
