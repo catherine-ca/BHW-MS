@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    
+
     <div class="row">
         <!-- Monthly Patients Chart -->
         <div class="col-md-6">
@@ -95,7 +95,7 @@
         labels: ['Infancy', 'Toddler', 'Childhood', 'Adolescence', 'Adulthood', 'Senior'],
         datasets: [{
             label: 'Average Age per Category',
-            data: @json($averageAges), 
+            data: @json($averageAges),
             backgroundColor: 'rgba(153, 102, 255, 0.2)',
             borderColor: 'rgba(153, 102, 255, 1)',
             borderWidth: 1
@@ -124,3 +124,4 @@
         averageAgeConfig
     );
 </script>
+cdn.jsdelivr.net

@@ -13,6 +13,11 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
+     public function index()
+{
+    return $this->dashboard();
+}
     public function dashboard()
     {
         // Patients Summary
@@ -28,8 +33,7 @@ class DashboardController extends Controller
                             ->get();
 
         $monthlyLabels = $monthlyPatients->pluck('month');
-        $monthlyCounts = $monthlyPatients->pluck('count'); 
-                            
+        $monthlyCounts = $monthlyPatients->pluck('count');
 
         // Average Age Data
         $averageAges = [
